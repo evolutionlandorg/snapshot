@@ -98,7 +98,7 @@ export default {
   },
   methods: {
     getLogoUrl() {
-      return `https://raw.githubusercontent.com/snapshot-labs/snapshot.js/master/src/plugins/gnosis/logo.png`;
+      return `https://raw.githubusercontent.com/evolutionlandorg/snapshot.js/master/src/plugins/gnosis/logo.png`;
     },
     addAction() {
       if (!this.input) this.input = {};
