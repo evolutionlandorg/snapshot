@@ -1,9 +1,9 @@
 name: Staging
 on:
   pull_request:
-    branches: [master]
+    branches: [develop]
   push:
-    branches: [master, feature/github-actions]
+    branches: [develop, feature/github-actions]
 
 jobs:
   build-and-deploy:
