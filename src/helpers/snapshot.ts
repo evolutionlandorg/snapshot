@@ -134,13 +134,14 @@ export async function getProposals(space) {
   try {
     let proposals: any = await client.getProposals(space.key);
     if (proposals && !space.filters?.onlyMembers) {
-      const scores: any = await getScores(
-        space.key,
-        space.strategies,
-        space.network,
-        getProvider(space.network),
-        Object.values(proposals).map((proposal: any) => proposal.address)
-      );
+      //const scores: any = await getScores(
+        //space.key,
+        //space.strategies,
+        //space.network,
+        //getProvider(space.network),
+        //Object.values(proposals).map((proposal: any) => proposal.address)
+      //);
+      const scores = [0];
       console.log('Scores', scores);
       proposals = Object.fromEntries(
         Object.entries(proposals).map((proposal: any) => {
