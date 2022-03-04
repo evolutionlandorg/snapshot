@@ -1,0 +1,45 @@
+name: CI
+on:
+  push:
+    tags: ["*"]
+    branches: [master, develop]
+  pull_request:
+    branches: [develop]
+
+jobs:
+  build-and-deploy:
+    name: Build and Deploy
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v2
+
+      - name: Docker login
+        uses: docker/login-action@v1
+        with:
+          registry: asia-northeast1-docker.pkg.dev
+          username: _json_key
+          password: ${{ secrets.GAR_JSON_KEY }}
+
+      - uses: olegtarasov/get-tag@v2.1
+        id: tag-name
+      - uses: benjlevesque/short-sha@v1.2
+        id: short-sha
+        with:
+          length: 7
+
+      - name: Build and publish docker image
+        run: |
+          IMAGE_NAME=evolutionland/evolutionlandorg/snapshot
+          IMAGE_PREFIX=asia-northeast1-docker.pkg.dev
+          IMAGE_PUSH_NAME_TAG=${IMAGE_PREFIX}/${IMAGE_NAME}:${GIT_TAG_NAME}
+          IMAGE_PUSH_NAME_SHA=${IMAGE_PREFIX}/${IMAGE_NAME}:sha-${SHA}
+          if [ -n "${GIT_TAG_NAME}" ]; then
+          docker build \
+            -t ${IMAGE_PUSH_NAME_TAG} \
+            .
+            docker push ${IMAGE_PUSH_NAME_TAG}
+          fi
+          docker build \
+            -t ${IMAGE_PUSH_NAME_SHA} \
+            .
+          docker push ${IMAGE_PUSH_NAME_SHA}
